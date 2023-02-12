@@ -4,7 +4,7 @@ import pytest
 from datasets import Dataset, DatasetDict, Features, NamedSplit, Value
 from datasets.io.parquet import ParquetDatasetReader, ParquetDatasetWriter
 
-from ..utils import assert_arrow_memory_doesnt_increase, assert_arrow_memory_increases
+from ..utils import assert_arrow_memory_doesnt_increase, assert_arrow_memory_increases, require_pil
 
 
 def _check_parquet_dataset(dataset, expected_features):
@@ -124,6 +124,7 @@ def test_parquet_datasetdict_reader_split(split, parquet_path, tmp_path):
     assert all(dataset[split].split == split for split in path.keys())
 
 
+@require_pil
 def test_parquer_write(dataset, tmp_path):
     writer = ParquetDatasetWriter(dataset, tmp_path / "foo.parquet")
     assert writer.write() > 0
